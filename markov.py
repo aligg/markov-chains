@@ -1,6 +1,7 @@
 """Generate Markov text from text files."""
 
 from random import choice
+# import random
 
 
 def open_and_read_file(file_path):
@@ -11,7 +12,7 @@ def open_and_read_file(file_path):
     """
 
     opened_file = open(input_path)
-    text_string = str(opened_file.read())
+    text_string = opened_file.read()
 
     return text_string
 
@@ -43,7 +44,7 @@ def make_chains(text_string):
 
     chains = {}
 
-    word_list = list(text_string.split())
+    word_list = text_string.split()
     #print word_list
 
     for i in range(len(word_list) - 2):
@@ -51,8 +52,7 @@ def make_chains(text_string):
         if bigram in chains:
             chains[bigram].append(word_list[i + 2])
         else:
-               chains[bigram] = [word_list[i + 2]]
-    print chains
+            chains[bigram] = [word_list[i + 2]]
     return chains
 
 
@@ -61,12 +61,22 @@ def make_text(chains):
 
     words = []
 
-    # your code goes here
+    starter_bigram = choice(chains.keys())
+    word1, word2 = starter_bigram[:]
+    words.append(word1)
+    words.append(word2)
 
+
+    while starter_bigram in chains.keys():
+        random_word = choice(chains[starter_bigram])
+        starter_bigram = (starter_bigram[1], random_word)
+        words.append(random_word)
     return " ".join(words)
 
 
-input_path = "green-eggs.txt"
+
+# input_path = "green-eggs.txt"
+input_path = "gettysburg.txt"
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
